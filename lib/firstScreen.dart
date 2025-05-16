@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:imc/logotipo.dart';
+import 'package:imc/secondScreen.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -21,17 +23,28 @@ class _FirstScreenState extends State<FirstScreen> {
 
     final double valor = peso / (altura * altura);
 
-    setState(() {
-      if (valor < 18.5) {
-        imc = 'Abaixo do peso';
-      } else if (valor < 25) {
-        imc = 'Peso normal';
-      } else if (valor < 30) {
-        imc = 'Sobrepeso';
-      } else {
-        imc = 'Obesidade';
-      }
-    });
+    if (valor < 18.5) {
+      imc = 'Magreza';
+    } else if (valor < 25) {
+      imc = 'Normal';
+    } else if (valor < 30) {
+      imc = 'Sobrepeso';
+    } else if (valor < 40) {
+      imc = 'Obesidade';
+    } else {
+      imc = 'Obesidade grave';
+    }
+
+    alturaController.text = '';
+    pesoController.text = '';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => SecondScreen(classificacao: imc, pontuacao: valor),
+      ),
+    );
   }
 
   @override
@@ -43,7 +56,10 @@ class _FirstScreenState extends State<FirstScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(imc, style: TextStyle(fontSize: 18)),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
+              child: Logotipo(size: 90),
+            ),
             TextField(
               controller: alturaController,
               keyboardType: TextInputType.number,
